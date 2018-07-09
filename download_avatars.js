@@ -1,7 +1,9 @@
 //require request module //
 var request = require('request');
 //require API token module //
-var token = require('./token')
+var token = require('./token');
+//require filesystem module
+var fs = require('fs');
 // console.log('Welcome to the GitHub Avatar Downloader!');
 // get repo contributors function - takes owner, repo name and callback
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -18,10 +20,28 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 getRepoContributors("jquery", "jquery", function(err, result) {
-    for (var i = 0; i < JSON.parse(result).length; i++) {
-        if (JSON.parse(result)[i].avatar_url) {
-            console.log(JSON.parse(result)[i].avatar_url);
+    var parsedResult = JSON.parse(result)
+    var resultArray
+    for (var i = 0; i < parsedResult.length; i++) {
+        if (parsedResult[i].avatar_url) {
+            // console.log(parsedResult[i].avatar_url);
+            var filepath = './pics/' + parsedResult[i].login + '.jpeg'
+            var name = parsedResult[i].login
+            downloadImageByURL(parsedResult[i].avatar_url, filepath, name)
         }
     }
 });
 
+
+// getRepoContributors("jquery", "jquery", function(err, result) {
+//     //save each image
+// });
+var url = 'https://avatars0.githubusercontent.com/u/1615?v=4'
+
+function downloadImageByURL(url, filepath, name) {
+    request.get(url).on('end', function(){
+        console.log(`Downloaded ${name}'s picture`);
+    })
+    .pipe(fs.createWriteStream(filepath))
+
+}
