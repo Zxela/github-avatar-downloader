@@ -1,3 +1,23 @@
+//require request module //
 var request = require('request');
+//require API token module //
+var token = require('token')
+// console.log('Welcome to the GitHub Avatar Downloader!');
+// get repo contributors function - takes owner, repo name and callback
+function getRepoContributors(repoOwner, repoName, cb) {
+    var options  = {
+        url : "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
+        headers: {
+            'User-Agent': 'Zxela',
+            'Authorization': 'token.GITHUB_TOKEN'
+        }
+    };
+    request(options, function(err, res, body) {
+        cb(err,body);
+    });
+}
 
-console.log('Welcome to the GitHub Avatar Downloader!');
+getRepoContributors("jquery", "jquery", function(err, result) {
+    console.log("Errors:", err);
+    console.log("Result:", result);
+});
