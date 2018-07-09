@@ -5,8 +5,8 @@ var token = require('./token');
 //require filesystem module
 var fs = require('fs');
 var args = process.argv.slice(2)
-var repOwner = args[0]
-var repName = args[1]
+var repOwner = args[0] || "jquery";
+var repName = args[1] || "jquery";
 // console.log('Welcome to the GitHub Avatar Downloader!');
 // get repo contributors function - takes owner, repo name and callback
 function getRepoContributors(repoOwner, repoName, cb) {
